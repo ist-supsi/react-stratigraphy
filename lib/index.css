@@ -1,0 +1,12 @@
+
+.selectable {
+  cursor: pointer;
+}
+
+.unselectable {
+  cursor: default !important;
+}
+
+.selectable:hover { 
+  background-color: rgb(233, 233, 233);
+}
