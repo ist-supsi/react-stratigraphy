@@ -11,13 +11,13 @@ Example:
 Install the module with npm:
 
 ```
-npm install @ist-supsi/stratigrafy
+npm install @ist-supsi/stratigraphy
 ```
 
 or use yarn:
 
 ```
-yarn add @ist-supsi/stratigrafy
+yarn add @ist-supsi/stratigraphy
 ```
 
 ## Usage
