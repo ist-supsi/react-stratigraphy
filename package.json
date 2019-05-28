@@ -1,6 +1,6 @@
 {
   "name": "@ist-supsi/stratigraphy",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "ReactJS module for stratigraphies representation",
   "main": "build/index.js",
   "directories": {
