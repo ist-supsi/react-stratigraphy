@@ -2,6 +2,12 @@
   "name": "@ist-supsi/stratigraphy",
   "version": "1.0.3",
   "description": "ReactJS module for stratigraphies representation",
+  "keywords": [
+    "react",
+    "stratigraphy",
+    "geology",
+    "borehole"
+  ],
   "main": "build/index.js",
   "directories": {
     "lib": "lib"
@@ -18,7 +24,10 @@
     "type": "git",
     "url": "git+https://github.com/ist-supsi/react-stratigraphy.git"
   },
-  "author": "milan.antonovic@supsi.ch",
+  "author": "SUPSI <geoservice@supsi.ch> (https://github.com/ist-supsi)",
+  "contributors": [
+    "Milan P. Antonovic <milan.antonovic@supsi.ch> (https://github.com/mantonovic)"
+  ],
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/ist-supsi/react-stratigraphy/issues"
