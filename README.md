@@ -4,7 +4,7 @@ A simple reactjs module for creating graphical representations of stratigraphies
 
 Example:
 
-<img src="assets/screenshot.png" alt="Printscreen" width="250px">
+<img src="assets/screenshot.gif" alt="Printscreen" width="250px">
 
 ## Installation
 
