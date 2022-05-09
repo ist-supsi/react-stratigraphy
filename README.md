@@ -88,6 +88,19 @@ export default ExampleComponent;
 
 ## Dev corner
 
+
+### Install the requirements
+
+```bash
+cd ./js-stratigraphy
+docker run --rm -it \
+    -v $PWD:/app \
+    -w /app \
+    -u $(id -u ${USER}):$(id -g ${USER}) \
+    node:16.13.1-alpine3.14 \
+        npm install
+```
+
 ### Run dev Server
 
 Access to http://localhost:3000
