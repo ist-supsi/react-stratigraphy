@@ -90,18 +90,20 @@ export default ExampleComponent;
 
 ### Run dev Server
 
+Access to http://localhost:3000
+
 ```bash
 docker run --rm -it \
     -v $PWD:/app \
     -w /app \
     -u $(id -u ${USER}):$(id -g ${USER}) \
     --network="host" \
+    -e PORT=3000 \
     node:16.13.1-alpine3.14 \
     npm start
 ```
 
-
-### Build the library
+### Build the library for release
 
 ```bash
 docker run --rm -it \
@@ -110,11 +112,11 @@ docker run --rm -it \
     -u $(id -u ${USER}):$(id -g ${USER}) \
     --network="host" \
     node:16.13.1-alpine3.14 \
-        npm start
+        npm run build-lib
 ```
 
 
-### Watch the library for changes
+### Watch the library for changes if used as a linked module
 
 ```bash
 docker run --rm -it \
