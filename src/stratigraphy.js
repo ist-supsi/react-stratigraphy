@@ -286,7 +286,7 @@ class Stratigraphy extends React.Component {
               position: "absolute",
               top: "-" + offset + "px",
               width: "100%",
-              backgroundColor: "pink",
+              // backgroundColor: "pink",
             }}
           >
             {data.map((layer, idx) => {
@@ -345,8 +345,8 @@ class Stratigraphy extends React.Component {
                   <div
                     style={{
                       minWidth: "4em",
-                      // backgroundColor: this.handleColor(layer),
-                      backgroundColor: "transparent",
+                      backgroundColor: this.handleColor(layer),
+                      // backgroundColor: "transparent",
                       backgroundImage: this.handlePattern(layer),
                       display: "flex",
                       flexDirection: "column",
