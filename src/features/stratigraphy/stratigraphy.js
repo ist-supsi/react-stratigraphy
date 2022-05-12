@@ -1,7 +1,7 @@
 import React from "react";
+import * as Styled from "./styles";
 import PropTypes from "prop-types";
 import Draggable from "react-draggable";
-
 class Stratigraphy extends React.Component {
   constructor(props) {
     super(props);

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import * as Styled from "./styles";
-import Stratigraphy from "../stratigraphy";
+import Stratigraphy from "../features/stratigraphy";
 import { data } from "./data";
 
 const App = () => {
