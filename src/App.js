@@ -21,7 +21,7 @@ export const Col = styled.div`
   background-color: ${(props) =>
     props.selected === true ? "rgb(233, 233, 233)" : "transparent"};
   border-left: none;
-  transition: all 0.25s cubic-bezier(.25,.8,.25,1);
+  transition: all 0.25s cubic-bezier(0.25, 0.8, 0.25, 1);
 `;
 
 export const Subtitle = styled.div`
@@ -74,9 +74,8 @@ const App = () => {
         }}
         unit="m"
       />
-      <Col
-        selected={selected!==null}
-      >
+      {/* half left side of the page that shows the title */}
+      <Col selected={selected !== null}>
         <Title>{selected?.title}</Title>
         <Subtitle>{selected?.subtitle}</Subtitle>
       </Col>

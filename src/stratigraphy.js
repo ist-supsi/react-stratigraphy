@@ -173,6 +173,7 @@ class Stratigraphy extends React.Component {
           ...this.props.style,
         }}
       >
+        {/* first column */}
         <div
           style={{
             position: "relative",
@@ -181,6 +182,7 @@ class Stratigraphy extends React.Component {
             width: "60px",
           }}
         >
+          {/* list of layers in first column */}
           {data.map((layer, idx) => (
             <div
               key={"stratigrafy-minimap-layer-" + idx}
@@ -240,6 +242,7 @@ class Stratigraphy extends React.Component {
                         textAlign: "center",
                       }}
                     >
+                      {/* number at top of first column */}
                       {
                         parseInt(top / pxm, 10)
                         // Math.round(top / pxm * 100) / 100
@@ -258,6 +261,7 @@ class Stratigraphy extends React.Component {
                         textAlign: "center",
                       }}
                     >
+                      {/* number at bottom of first column */}
                       {
                         parseInt((top + rangeHeight) / pxm, 10)
                         // Math.round((top + rangeHeight) / pxm * 100) / 100
@@ -269,10 +273,12 @@ class Stratigraphy extends React.Component {
             </div>
           </Draggable>
         </div>
+        {/* second and third column */}
         <div
           style={{
             flex: "1 1 100%",
             position: "relative",
+            // backgroundColor: "red",
           }}
         >
           <div
@@ -280,6 +286,7 @@ class Stratigraphy extends React.Component {
               position: "absolute",
               top: "-" + offset + "px",
               width: "100%",
+              backgroundColor: "pink",
             }}
           >
             {data.map((layer, idx) => {
@@ -313,6 +320,7 @@ class Stratigraphy extends React.Component {
                   }}
                   onMouseLeave={this.handleMouseLeave}
                   style={{
+                    // what they are doing??? hoverable?
                     ...(this.state.selected !== null &&
                     this.state.selected.id === layer[mapping.id]
                       ? this.props.selectedLayerStyle
@@ -323,27 +331,34 @@ class Stratigraphy extends React.Component {
                     this.state.over[mapping.id] === layer[mapping.id]
                       ? this.props.overLayerStyle
                       : null),
+                    // until here
                     cursor: "pointer",
                     display: "flex",
                     flexDirection: "row",
                     height: layerHeight,
-                    transition: 'background-color 0.25s cubic-bezier(.25,.8,.25,1)',
+                    // backgroundColor: "yellow",
+                    transition:
+                      "background-color 0.25s cubic-bezier(.25,.8,.25,1)",
                   }}
                 >
+                  {/* list of layers in second column */}
                   <div
                     style={{
                       minWidth: "4em",
-                      backgroundColor: this.handleColor(layer),
+                      // backgroundColor: this.handleColor(layer),
+                      backgroundColor: "transparent",
                       backgroundImage: this.handlePattern(layer),
                       display: "flex",
                       flexDirection: "column",
                       justifyContent: "flex-end",
                     }}
                   >
+                    {/* number at bottom of each layer */}
                     {layerHeight > titleLimit ? (
                       <div
                         style={{
                           backgroundColor: "rgba(0, 0, 0, 0.5)",
+                          // backgroundColor: "red",
                           color: "white",
                           fontSize:
                             layerHeight > subTitleLimit ? "0.7em" : "0.6em",
@@ -356,11 +371,13 @@ class Stratigraphy extends React.Component {
                       </div>
                     ) : null}
                   </div>
+                  {/* third column: big area with the name of layers that is clickable */}
                   <div
                     style={{
                       flex: "1 1 100%",
                       padding: "0.5em 1em 0.5em 0.5em",
                       overflow: "hidden",
+                      // backgroundColor: "green",
                     }}
                   >
                     <div
