@@ -37,3 +37,65 @@ export const LensNumber = styled.div`
   font-size: 10px;
   text-align: center;
 `;
+
+export const ColumnsContainer = styled.div`
+  flex: 1 1 100%;
+  position: relative;
+`;
+
+export const ShakingColumns = styled.div`
+  position: absolute;
+  top: ${(props) => props.offset};
+  width: 100%;
+`;
+
+export const LayerInfoList = styled.div`
+  cursor: pointer;
+  display: flex;
+  flex-direction: row;
+  height: ${(props) => props.height};
+  transition: background-color 0.25s cubic-bezier(0.25, 0.8, 0.25, 1);
+`;
+
+export const SecondLayerList = styled.div`
+  min-width: 4em;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  background-color: ${(props) => props.backgroundColor};
+  background-image: ${(props) => props.backgroundImage};
+`;
+
+export const LayerLength = styled.div`
+  background-color: rgba(0, 0, 0, 0.5);
+  color: white;
+  font-size: ${(props) => (props.isBig ? "0.7em" : "0.6em")};
+  font-weight: bold;
+  text-align: center;
+  transition: font-size 0.25s;
+`;
+
+export const LayerTitleContainer = styled.div`
+  flex: 1 1 100%;
+  padding: 0.5em 1em 0.5em 0.5em;
+  overflow: hidden;
+`;
+
+export const ShakingLayerTitle = styled.div`
+  position: sticky;
+  top: 0.5em;
+`;
+
+export const LayerTitle = styled.div`
+  font-weight: bold;
+  font-size: ${(props) => (props.isBig ? "1em" : "0.8em")};
+  transition: font-size 0.25s;
+`;
+
+export const LayerSubtitle = styled.div`
+  color: #787878;
+  font-size: 0.8em;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+`;

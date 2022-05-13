@@ -11,7 +11,6 @@ const Stratigraphy = (props) => {
     over: null,
     minimapCursor: "grab",
     scale: 1,
-
     // Distance from top in px
     top: 0,
     // pixel / meter
@@ -127,19 +126,6 @@ const Stratigraphy = (props) => {
 
   const updateDimensions = () => {
     console.log("updateDimensions");
-    // what is this element?
-    // if (element !== undefined && element !== null) {
-    //   if (props.data.length > 0) {
-    //   }
-    //   setState({
-    //     height: element.clientHeight,
-    //     pxm:
-    //       props.data.length > 0
-    //         ? element.clientHeight /
-    //           props.data[props.data.length - 1][props.mapping.to]
-    //         : 0,
-    //   });
-    // }
     if (element !== undefined && element !== null) {
       if (props.data.length > 0) {
       }
@@ -157,6 +143,22 @@ const Stratigraphy = (props) => {
     }
   };
 
+  const handleLayerClick = (layer) => {
+    if (onSelected !== undefined && typeof onSelected === "function") {
+      onSelected(
+        state?.selected === null || state?.selected.id !== layer[mapping.id]
+          ? layer
+          : null
+      );
+    }
+    setState((prevState) => ({
+      ...prevState,
+      selected:
+        state?.selected === null || state?.selected.id !== layer[mapping.id]
+          ? layer
+          : null,
+    }));
+  };
   const { data, mapping, onSelected } = props;
 
   const { height, pxm, top } = state;
@@ -234,54 +236,18 @@ const Stratigraphy = (props) => {
         </Draggable>
       </Styled.FirstColumn>
 
-      {/* second and third column */}
-      <div
-        style={{
-          flex: "1 1 100%",
-          position: "relative",
-          // backgroundColor: "red",
-        }}
-      >
-        <div
-          style={{
-            position: "absolute",
-            top: "-" + offset + "px",
-            width: "100%",
-            // backgroundColor: "pink",
-          }}
-        >
+      <Styled.ColumnsContainer>
+        <Styled.ShakingColumns offset={"-" + offset + "px"}>
           {data.map((layer, idx) => {
             const layerHeight =
               factor * (layer[mapping.to] - layer[mapping.from]);
-
             return (
-              <div
-                key={"stratigrafy-layer-" + idx}
-                onClick={() => {
-                  if (
-                    onSelected !== undefined &&
-                    typeof onSelected === "function"
-                  ) {
-                    onSelected(
-                      state?.selected === null ||
-                        state?.selected.id !== layer[mapping.id]
-                        ? layer
-                        : null
-                    );
-                  }
-                  setState((prevState) => ({
-                    ...prevState,
-                    selected:
-                      state?.selected === null ||
-                      state?.selected.id !== layer[mapping.id]
-                        ? layer
-                        : null,
-                  }));
-                }}
-                onMouseEnter={() => {
-                  handleMouseEnter(layer);
-                }}
+              <Styled.LayerInfoList
+                key={"stratigraphy-layer-" + idx}
+                onClick={() => handleLayerClick(layer)}
+                onMouseEnter={() => handleMouseEnter(layer)}
                 onMouseLeave={handleMouseLeave}
+                height={layerHeight + "px"}
                 style={{
                   // what they are doing??? hoverable?
                   ...(state?.selected !== null &&
@@ -295,92 +261,38 @@ const Stratigraphy = (props) => {
                     ? props.overLayerStyle
                     : null),
                   // until here
-                  cursor: "pointer",
-                  display: "flex",
-                  flexDirection: "row",
-                  height: layerHeight,
-                  // backgroundColor: "yellow",
-                  transition:
-                    "background-color 0.25s cubic-bezier(.25,.8,.25,1)",
                 }}
               >
-                {/* list of layers in second column */}
-                <div
-                  style={{
-                    minWidth: "4em",
-                    backgroundColor: handleColor(layer),
-                    // backgroundColor: "red",
-                    backgroundImage: handlePattern(layer),
-                    display: "flex",
-                    flexDirection: "column",
-                    justifyContent: "flex-end",
-                  }}
+                <Styled.SecondLayerList
+                  backgroundColor={handleColor(layer)}
+                  backgroundImage={handlePattern(layer)}
                 >
-                  {/* number at bottom of each layer */}
                   {layerHeight > titleLimit && (
-                    <div
-                      style={{
-                        backgroundColor: "rgba(0, 0, 0, 0.5)",
-                        // backgroundColor: "red",
-                        color: "white",
-                        fontSize:
-                          layerHeight > subTitleLimit ? "0.7em" : "0.6em",
-                        fontWeight: "bold",
-                        textAlign: "center",
-                        transition: "font-size 0.25s",
-                      }}
-                    >
+                    <Styled.LayerLength isBig={layerHeight > subTitleLimit}>
                       {layer[mapping.to]} {props.unit}
-                    </div>
+                    </Styled.LayerLength>
                   )}
-                </div>
-                {/* third column: big area with the name of layers that is clickable */}
-                <div
-                  style={{
-                    flex: "1 1 100%",
-                    padding: "0.5em 1em 0.5em 0.5em",
-                    overflow: "hidden",
-                    // backgroundColor: "green",
-                  }}
-                >
-                  <div
-                    style={{
-                      position: "sticky",
-                      top: "0.5em",
-                    }}
-                  >
+                </Styled.SecondLayerList>
+
+                <Styled.LayerTitleContainer>
+                  <Styled.ShakingLayerTitle>
                     {layerHeight > titleLimit && (
-                      <div
-                        style={{
-                          fontWeight: "bold",
-                          fontSize:
-                            layerHeight > subTitleLimit ? "1em" : "0.8em",
-                          transition: "font-size 0.25s",
-                        }}
-                      >
+                      <Styled.LayerTitle isBig={layerHeight > subTitleLimit}>
                         {handleTitle(layer)}
-                      </div>
+                      </Styled.LayerTitle>
                     )}
                     {layerHeight > subTitleLimit && (
-                      <div
-                        style={{
-                          color: "#787878",
-                          fontSize: "0.8em",
-                          overflow: "hidden",
-                          textOverflow: "ellipsis",
-                          whiteSpace: "nowrap",
-                        }}
-                      >
+                      <Styled.LayerSubtitle>
                         {handleSubTitle(layer)}
-                      </div>
+                      </Styled.LayerSubtitle>
                     )}
-                  </div>
-                </div>
-              </div>
+                  </Styled.ShakingLayerTitle>
+                </Styled.LayerTitleContainer>
+              </Styled.LayerInfoList>
             );
           })}
-        </div>
-      </div>
+        </Styled.ShakingColumns>
+      </Styled.ColumnsContainer>
     </Styled.Container>
   );
 };
