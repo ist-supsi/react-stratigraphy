@@ -1,12 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import * as Styled from "./styles";
 import PropTypes from "prop-types";
 import Draggable from "react-draggable";
-import { element } from "prop-types";
 
 const Stratigraphy = (props) => {
-  console.log("Stratigraphy props", props, window.innerHeight);
-  const heightWindow = window.innerHeight;
+  console.log("Stratigraphy props", props);
+  const element = useRef(null);
   const [state, setState] = useState({
     selected: null,
     over: null,
@@ -146,10 +145,13 @@ const Stratigraphy = (props) => {
       }
       setState((prevState) => ({
         ...prevState,
-        height: heightWindow,
+        height: element.current?.clientHeight,
+        // add const 1.5 to show the red line in last layer when its selected
         pxm:
           props.data.length > 0
-            ? heightWindow / props.data[props.data.length - 1][props.mapping.to]
+            ? element.current?.clientHeight /
+                props.data[props.data.length - 1][props.mapping.to] -
+              1.5
             : 0,
       }));
     }
@@ -167,11 +169,10 @@ const Stratigraphy = (props) => {
 
   const titleLimit = 30;
   const subTitleLimit = 50;
-
   return (
     <Styled.Container
       onWheel={handleOnWheel}
-      ref={(divElement) => (element = divElement)}
+      ref={element}
       style={{
         ...props.style,
       }}
