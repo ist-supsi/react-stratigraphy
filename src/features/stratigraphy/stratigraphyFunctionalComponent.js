@@ -5,7 +5,8 @@ import Draggable from "react-draggable";
 import { element } from "prop-types";
 
 const Stratigraphy = (props) => {
-  console.log("Stratigraphy props", props);
+  console.log("Stratigraphy props", props, window.innerHeight);
+  const heightWindow = window.innerHeight;
   const [state, setState] = useState({
     selected: null,
     over: null,
@@ -15,8 +16,7 @@ const Stratigraphy = (props) => {
     // Distance from top in px
     top: 0,
     // pixel / meter
-    // pxm: 0, by mali
-    pxm: 1,
+    pxm: 0,
     // height of this component in pixels
     height: 0,
     // height of the window in pixels
@@ -24,21 +24,13 @@ const Stratigraphy = (props) => {
   });
 
   useEffect(() => {
-    // updateDimensions();
-    //   window.addEventListener("resize", updateDimensions, { passive: true });
-    // return () => {
-    //   second
-    // }
+    updateDimensions();
+    window.addEventListener("resize", updateDimensions, { passive: true });
+    return () => {
+      window.removeEventListener("resize", updateDimensions);
+    };
   }, []);
 
-  // componentDidMount() {
-  //   updateDimensions();
-  //   window.addEventListener("resize", updateDimensions, { passive: true });
-  // }
-
-  // componentWillUnmount() {
-  //   window.removeEventListener("resize", updateDimensions);
-  // }
   const handleTitle = (layer) => {
     const { getTitle, mapping } = props;
     if (getTitle !== undefined && typeof getTitle === "function") {
@@ -54,14 +46,16 @@ const Stratigraphy = (props) => {
     return layer[mapping.subtitle];
   };
   const handleMouseEnter = (layer) => {
-    setState({
+    setState((prevState) => ({
+      ...prevState,
       over: layer,
-    });
+    }));
   };
   const handleMouseLeave = () => {
-    setState({
+    setState((prevState) => ({
+      ...prevState,
       over: null,
-    });
+    }));
   };
   const handleColor = (layer) => {
     const { getColor, mapping } = props;
@@ -99,10 +93,11 @@ const Stratigraphy = (props) => {
       top = state?.top - (state?.top + rangeHeight - state?.height);
     }
 
-    setState({
+    setState((prevState) => ({
+      ...prevState,
       scale: Math.min(Math.max(0.02, scale), 1),
       top: top < 0 ? 0 : top,
-    });
+    }));
   };
   const handlePattern = (layer) => {
     const { getPattern, mapping } = props;
@@ -112,27 +107,27 @@ const Stratigraphy = (props) => {
     return `url('${layer[mapping.pattern]}')`;
   };
   const handleStart = (e, data) => {
-    setState({
+    setState((prevState) => ({
+      ...prevState,
       minimapCursor: "grabbing",
-    });
+    }));
   };
 
   const handleDrag = (e, data) => {
     if (data.y !== state?.top) {
-      setState({
-        top: data.y,
-      });
+      setState((prevState) => ({ ...prevState, top: data.y }));
     }
   };
 
   const handleStop = (e, data) => {
-    setState({
+    setState((prevState) => ({
+      ...prevState,
       minimapCursor: "grab",
-    });
+    }));
   };
 
   const updateDimensions = () => {
-    // console.log("updateDimensions", element);
+    console.log("updateDimensions");
     // what is this element?
     // if (element !== undefined && element !== null) {
     //   if (props.data.length > 0) {
@@ -146,6 +141,18 @@ const Stratigraphy = (props) => {
     //         : 0,
     //   });
     // }
+    if (element !== undefined && element !== null) {
+      if (props.data.length > 0) {
+      }
+      setState((prevState) => ({
+        ...prevState,
+        height: heightWindow,
+        pxm:
+          props.data.length > 0
+            ? heightWindow / props.data[props.data.length - 1][props.mapping.to]
+            : 0,
+      }));
+    }
   };
 
   const { data, mapping, onSelected } = props;
@@ -164,7 +171,7 @@ const Stratigraphy = (props) => {
   return (
     <Styled.Container
       onWheel={handleOnWheel}
-      // ref={(divElement) => (element = divElement)}
+      ref={(divElement) => (element = divElement)}
       style={{
         ...props.style,
       }}
@@ -179,6 +186,7 @@ const Stratigraphy = (props) => {
         }}
       >
         {/* list of layers in first column */}
+
         {data?.map((layer, idx) => (
           <div
             key={"stratigrafy-minimap-layer-" + idx}
@@ -192,87 +200,85 @@ const Stratigraphy = (props) => {
               ...{
                 backgroundColor: handleColor(layer),
                 backgroundImage: handlePattern(layer),
-                //  * 200 by Mali
-                height:
-                  (layer[mapping.to] - layer[mapping.from]) * pxm * 200 + "px",
+                height: (layer[mapping.to] - layer[mapping.from]) * pxm + "px",
                 position: "relative",
                 margin: "0px 12px",
               },
             }}
-          >
-            <Draggable
-              axis="y"
-              bounds="parent"
-              defaultPosition={{ x: 0, y: 0 }}
-              onDrag={handleDrag}
-              onStart={handleStart}
-              onStop={handleStop}
-              // position={null}
-              position={{
-                y: state.top,
-                x: 0,
-              }}
-            >
-              <div
-                style={{
-                  backgroundColor: "rgba(255, 255, 255, 0.3)",
-                  boxShadow: "rgba(0, 0, 0, 0.2) 4px 4px 12px",
-                  border: "thin solid rgba(165, 165, 165, 0.5)",
-                  cursor: state.minimapCursor,
-                  display: "flex",
-                  flexDirection: "column",
-                  height: rangeHeight + "px",
-                  margin: "0px 4px",
-                  position: "absolute",
-                  top: "0px",
-                  width: "52px",
-                }}
-              >
-                {/* height is zero! ---> rangeHeight===0 */}
-
-                {rangeHeight >= 40
-                  ? [
-                      <div
-                        key="stratigrafy-range-1"
-                        style={{
-                          color: "black",
-                          fontSize: "10px",
-                          textAlign: "center",
-                        }}
-                      >
-                        {/* number at top of first column */}
-                        {
-                          parseInt(top / pxm, 10)
-                          // Math.round(top / pxm * 100) / 100
-                        }{" "}
-                        {props.unit}
-                      </div>,
-                      <div
-                        key="stratigrafy-range-2"
-                        style={{ flex: "1 1 100%" }}
-                      />,
-                      <div
-                        key="stratigrafy-range-3"
-                        style={{
-                          color: "black",
-                          fontSize: "10px",
-                          textAlign: "center",
-                        }}
-                      >
-                        {/* number at bottom of first column */}
-                        {
-                          parseInt((top + rangeHeight) / pxm, 10)
-                          // Math.round((top + rangeHeight) / pxm * 100) / 100
-                        }{" "}
-                        {props.unit}
-                      </div>,
-                    ]
-                  : null}
-              </div>
-            </Draggable>
-          </div>
+          />
         ))}
+
+        {/* lens for magnifier */}
+        <Draggable
+          axis="y"
+          bounds="parent"
+          defaultPosition={{ x: 0, y: 0 }}
+          onDrag={handleDrag}
+          onStart={handleStart}
+          onStop={handleStop}
+          // position={null}
+          position={{
+            y: state.top,
+            x: 0,
+          }}
+        >
+          <div
+            style={{
+              backgroundColor: "rgba(255, 255, 255, 0.3)",
+              boxShadow: "rgba(0, 0, 0, 0.2) 4px 4px 12px",
+              border: "thin solid rgba(165, 165, 165, 0.5)",
+              cursor: state.minimapCursor,
+              display: "flex",
+              flexDirection: "column",
+              height: rangeHeight + "px",
+              margin: "0px 4px",
+              position: "absolute",
+              top: "0px",
+              width: "52px",
+            }}
+          >
+            {rangeHeight >= 40
+              ? [
+                  <div
+                    key="stratigrafy-range-1"
+                    style={{
+                      color: "black",
+                      fontSize: "10px",
+                      textAlign: "center",
+                    }}
+                  >
+                    {/* number at top of first column */}
+                    {
+                      parseInt(top / pxm, 10)
+                      // Math.round(top / pxm * 100) / 100
+                    }{" "}
+                    {props.unit}
+                  </div>,
+                  <div
+                    key="stratigrafy-range-2"
+                    style={{ flex: "1 1 100%" }}
+                  />,
+                  <div
+                    key="stratigrafy-range-3"
+                    style={{
+                      color: "black",
+                      fontSize: "10px",
+                      textAlign: "center",
+                    }}
+                  >
+                    {/* number at bottom of first column */}
+                    {
+                      parseInt((top + rangeHeight) / pxm, 10)
+                      // Math.round((top + rangeHeight) / pxm * 100) / 100
+                    }{" "}
+                    {props.unit}
+                  </div>,
+                ]
+              : null}
+          </div>
+        </Draggable>
       </div>
+
       {/* second and third column */}
       <div
         style={{
@@ -290,13 +296,9 @@ const Stratigraphy = (props) => {
           }}
         >
           {data.map((layer, idx) => {
-            const layerHeight = 35;
-            {
-              /* const layerHeight =
-                factor * (layer[mapping.to] - layer[mapping.from]);
-                 layerHeight is 0 ,mali
-                 */
-            }
+            const layerHeight =
+              factor * (layer[mapping.to] - layer[mapping.from]);
+
             return (
               <div
                 key={"stratigrafy-layer-" + idx}
@@ -305,28 +307,21 @@ const Stratigraphy = (props) => {
                     onSelected !== undefined &&
                     typeof onSelected === "function"
                   ) {
-                    console.log(
-                      "onSelected",
-                      onSelected,
-                      typeof onSelected,
-                      state.selected,
-                      layer
-                    );
                     onSelected(
-                      state.selected === undefined ||
-                        state?.selected === null ||
+                      state?.selected === null ||
                         state?.selected.id !== layer[mapping.id]
                         ? layer
                         : null
                     );
                   }
-                  setState({
+                  setState((prevState) => ({
+                    ...prevState,
                     selected:
                       state?.selected === null ||
                       state?.selected.id !== layer[mapping.id]
                         ? layer
                         : null,
-                  });
+                  }));
                 }}
                 onMouseEnter={() => {
                   handleMouseEnter(layer);
@@ -334,13 +329,12 @@ const Stratigraphy = (props) => {
                 onMouseLeave={handleMouseLeave}
                 style={{
                   // what they are doing??? hoverable?
-                  // state.selected is null and crashed
-                  // ...(state?.selected !== null &&
-                  // state?.selected.id === layer[mapping.id]
-                  //   ? props.selectedLayerStyle
-                  //   : state?.selected !== null
-                  //   ? props.unselectedLayerStyle
-                  //   : null),
+                  ...(state?.selected !== null &&
+                  state?.selected.id === layer[mapping.id]
+                    ? props.selectedLayerStyle
+                    : state?.selected !== null
+                    ? props.unselectedLayerStyle
+                    : null),
                   ...(state?.over !== null &&
                   state?.over[mapping.id] === layer[mapping.id]
                     ? props.overLayerStyle
@@ -349,8 +343,7 @@ const Stratigraphy = (props) => {
                   cursor: "pointer",
                   display: "flex",
                   flexDirection: "row",
-                  // height: layerHeight, by mali
-                  height: "300px",
+                  height: layerHeight,
                   // backgroundColor: "yellow",
                   transition:
                     "background-color 0.25s cubic-bezier(.25,.8,.25,1)",
