@@ -163,7 +163,7 @@ const Stratigraphy = (props) => {
 
   const rangeHeight = state?.scale * height;
 
-  const factor = rangeHeight === 0 ? 0 : pxm * (height / rangeHeight);
+  const factor = rangeHeight === 0 ? rangeHeight : pxm * (height / rangeHeight);
 
   const offset = top * (height / rangeHeight);
 
@@ -187,7 +187,6 @@ const Stratigraphy = (props) => {
         }}
       >
         {/* list of layers in first column */}
-
         {data?.map((layer, idx) => (
           <div
             key={"stratigrafy-minimap-layer-" + idx}
@@ -238,44 +237,41 @@ const Stratigraphy = (props) => {
               width: "52px",
             }}
           >
-            {rangeHeight >= 40
-              ? [
-                  <div
-                    key="stratigrafy-range-1"
-                    style={{
-                      color: "black",
-                      fontSize: "10px",
-                      textAlign: "center",
-                    }}
-                  >
-                    {/* number at top of first column */}
-                    {
-                      parseInt(top / pxm, 10)
-                      // Math.round(top / pxm * 100) / 100
-                    }{" "}
-                    {props.unit}
-                  </div>,
-                  <div
-                    key="stratigrafy-range-2"
-                    style={{ flex: "1 1 100%" }}
-                  />,
-                  <div
-                    key="stratigrafy-range-3"
-                    style={{
-                      color: "black",
-                      fontSize: "10px",
-                      textAlign: "center",
-                    }}
-                  >
-                    {/* number at bottom of first column */}
-                    {
-                      parseInt((top + rangeHeight) / pxm, 10)
-                      // Math.round((top + rangeHeight) / pxm * 100) / 100
-                    }{" "}
-                    {props.unit}
-                  </div>,
-                ]
-              : null}
+            {rangeHeight >= 40 && (
+              <>
+                <div
+                  key="stratigrafy-range-1"
+                  style={{
+                    color: "black",
+                    fontSize: "10px",
+                    textAlign: "center",
+                  }}
+                >
+                  {/* number at top of first column */}
+                  {
+                    parseInt(top / pxm, 10)
+                    // Math.round(top / pxm * 100) / 100
+                  }{" "}
+                  {props.unit}
+                </div>
+                <div key="stratigrafy-range-2" style={{ flex: "1 1 100%" }} />
+                <div
+                  key="stratigrafy-range-3"
+                  style={{
+                    color: "black",
+                    fontSize: "10px",
+                    textAlign: "center",
+                  }}
+                >
+                  {/* number at bottom of first column */}
+                  {
+                    parseInt((top + rangeHeight) / pxm, 10)
+                    // Math.round((top + rangeHeight) / pxm * 100) / 100
+                  }{" "}
+                  {props.unit}
+                </div>
+              </>
+            )}
           </div>
         </Draggable>
       </div>
@@ -363,7 +359,7 @@ const Stratigraphy = (props) => {
                   }}
                 >
                   {/* number at bottom of each layer */}
-                  {layerHeight > titleLimit ? (
+                  {layerHeight > titleLimit && (
                     <div
                       style={{
                         backgroundColor: "rgba(0, 0, 0, 0.5)",
@@ -378,7 +374,7 @@ const Stratigraphy = (props) => {
                     >
                       {layer[mapping.to]} {props.unit}
                     </div>
-                  ) : null}
+                  )}
                 </div>
                 {/* third column: big area with the name of layers that is clickable */}
                 <div
@@ -395,7 +391,7 @@ const Stratigraphy = (props) => {
                       top: "0.5em",
                     }}
                   >
-                    {layerHeight > titleLimit ? (
+                    {layerHeight > titleLimit && (
                       <div
                         style={{
                           fontWeight: "bold",
@@ -406,8 +402,8 @@ const Stratigraphy = (props) => {
                       >
                         {handleTitle(layer)}
                       </div>
-                    ) : null}
-                    {layerHeight > subTitleLimit ? (
+                    )}
+                    {layerHeight > subTitleLimit && (
                       <div
                         style={{
                           color: "#787878",
@@ -419,7 +415,7 @@ const Stratigraphy = (props) => {
                       >
                         {handleSubTitle(layer)}
                       </div>
-                    ) : null}
+                    )}
                   </div>
                 </div>
               </div>
