@@ -169,6 +169,8 @@ const Stratigraphy = (props) => {
 
   const titleLimit = 30;
   const subTitleLimit = 50;
+
+  let isLayerSelected = false;
   return (
     <Styled.Container
       onWheel={handleOnWheel}
@@ -177,38 +179,29 @@ const Stratigraphy = (props) => {
         ...props.style,
       }}
     >
-      {/* first column */}
-      <div
-        style={{
-          position: "relative",
-          minWidth: "60px",
-          maxWidth: "60px",
-          width: "60px",
-        }}
-      >
-        {/* list of layers in first column */}
+      <Styled.FirstColumn>
         {data?.map((layer, idx) => (
-          <div
-            key={"stratigrafy-minimap-layer-" + idx}
-            style={{
-              ...(state?.selected !== null &&
-              state?.selected?.id === layer[mapping.id]
-                ? props.minimapSelectedLayerStyle
-                : {
-                    border: "thin solid rgb(100, 100, 100)",
-                  }),
-              ...{
-                backgroundColor: handleColor(layer),
-                backgroundImage: handlePattern(layer),
-                height: (layer[mapping.to] - layer[mapping.from]) * pxm + "px",
-                position: "relative",
-                margin: "0px 12px",
-              },
-            }}
-          />
+          <div key={"stratigraphy-minimap-layer-" + idx}>
+            {
+              (isLayerSelected =
+                state?.selected !== null &&
+                state?.selected?.id === layer[mapping.id])
+            }
+            {/*props.minimapSelectedLayerStyle it's a red border*/}
+            <Styled.FirstLayerList
+              backgroundColor={handleColor(layer)}
+              backgroundImage={handlePattern(layer)}
+              height={(layer[mapping.to] - layer[mapping.from]) * pxm + "px"}
+              style={{
+                ...(isLayerSelected
+                  ? props.minimapSelectedLayerStyle
+                  : {
+                      border: "thin solid rgb(100, 100, 100)",
+                    }),
+              }}
+            />
+          </div>
         ))}
-
-        {/* lens for magnifier */}
         <Draggable
           axis="y"
           bounds="parent"
@@ -222,59 +215,24 @@ const Stratigraphy = (props) => {
             x: 0,
           }}
         >
-          <div
-            style={{
-              backgroundColor: "rgba(255, 255, 255, 0.3)",
-              boxShadow: "rgba(0, 0, 0, 0.2) 4px 4px 12px",
-              border: "thin solid rgba(165, 165, 165, 0.5)",
-              cursor: state.minimapCursor,
-              display: "flex",
-              flexDirection: "column",
-              height: rangeHeight + "px",
-              margin: "0px 4px",
-              position: "absolute",
-              top: "0px",
-              width: "52px",
-            }}
+          <Styled.LensContainer
+            cursor={state.minimapCursor}
+            height={rangeHeight + "px"}
           >
             {rangeHeight >= 40 && (
               <>
-                <div
-                  key="stratigrafy-range-1"
-                  style={{
-                    color: "black",
-                    fontSize: "10px",
-                    textAlign: "center",
-                  }}
-                >
-                  {/* number at top of first column */}
-                  {
-                    parseInt(top / pxm, 10)
-                    // Math.round(top / pxm * 100) / 100
-                  }{" "}
-                  {props.unit}
-                </div>
-                <div key="stratigrafy-range-2" style={{ flex: "1 1 100%" }} />
-                <div
-                  key="stratigrafy-range-3"
-                  style={{
-                    color: "black",
-                    fontSize: "10px",
-                    textAlign: "center",
-                  }}
-                >
-                  {/* number at bottom of first column */}
-                  {
-                    parseInt((top + rangeHeight) / pxm, 10)
-                    // Math.round((top + rangeHeight) / pxm * 100) / 100
-                  }{" "}
-                  {props.unit}
-                </div>
+                <Styled.LensNumber>
+                  {parseInt(top / pxm, 10) + " " + props.unit}
+                </Styled.LensNumber>
+                <div style={{ flex: "1 1 100%" }} />
+                <Styled.LensNumber>
+                  {parseInt((top + rangeHeight) / pxm, 10) + " " + props.unit}
+                </Styled.LensNumber>
               </>
             )}
-          </div>
+          </Styled.LensContainer>
         </Draggable>
-      </div>
+      </Styled.FirstColumn>
 
       {/* second and third column */}
       <div
