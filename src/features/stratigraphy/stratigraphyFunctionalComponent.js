@@ -4,7 +4,21 @@ import PropTypes from "prop-types";
 import Draggable from "react-draggable";
 
 const Stratigraphy = (props) => {
-  console.log("Stratigraphy props", props);
+  const {
+    data,
+    mapping,
+    onSelected,
+    getTitle,
+    getSubTitle,
+    getColor,
+    getPattern,
+    minimapSelectedLayerStyle,
+    unit,
+    selectedLayerStyle,
+    unselectedLayerStyle,
+    overLayerStyle,
+  } = props;
+
   const element = useRef(null);
   const [state, setState] = useState({
     selected: null,
@@ -30,14 +44,12 @@ const Stratigraphy = (props) => {
   }, []);
 
   const handleTitle = (layer) => {
-    const { getTitle, mapping } = props;
     if (getTitle !== undefined && typeof getTitle === "function") {
       return getTitle(layer);
     }
     return layer[mapping.title];
   };
   const handleSubTitle = (layer) => {
-    const { getSubTitle, mapping } = props;
     if (getSubTitle !== undefined && typeof getSubTitle === "function") {
       return getSubTitle(layer);
     }
@@ -56,7 +68,6 @@ const Stratigraphy = (props) => {
     }));
   };
   const handleColor = (layer) => {
-    const { getColor, mapping } = props;
     if (typeof getColor === "function") {
       return getColor(layer[mapping.color]);
     }
@@ -86,19 +97,18 @@ const Stratigraphy = (props) => {
 
     const rangeHeight = scale * state?.height;
 
-    let top = state?.top;
+    let topOfLense = state?.top;
     if (state?.top + rangeHeight > state?.height) {
-      top = state?.top - (state?.top + rangeHeight - state?.height);
+      topOfLense = state?.top - (state?.top + rangeHeight - state?.height);
     }
 
     setState((prevState) => ({
       ...prevState,
       scale: Math.min(Math.max(0.02, scale), 1),
-      top: top < 0 ? 0 : top,
+      top: topOfLense < 0 ? 0 : topOfLense,
     }));
   };
   const handlePattern = (layer) => {
-    const { getPattern, mapping } = props;
     if (typeof getPattern === "function") {
       return getPattern(layer[mapping.pattern]);
     }
@@ -127,16 +137,16 @@ const Stratigraphy = (props) => {
   const updateDimensions = () => {
     console.log("updateDimensions");
     if (element !== undefined && element !== null) {
-      if (props.data.length > 0) {
+      if (data.length > 0) {
       }
       setState((prevState) => ({
         ...prevState,
         height: element.current?.clientHeight,
         // add const 1.5 to show the red line in last layer when its selected
         pxm:
-          props.data.length > 0
+          data.length > 0
             ? element.current?.clientHeight /
-                props.data[props.data.length - 1][props.mapping.to] -
+                data[data.length - 1][mapping.to] -
               1.5
             : 0,
       }));
@@ -159,15 +169,13 @@ const Stratigraphy = (props) => {
           : null,
     }));
   };
-  const { data, mapping, onSelected } = props;
 
-  const { height, pxm, top } = state;
+  const rangeHeight = state?.scale * state.height;
 
-  const rangeHeight = state?.scale * height;
+  const factor =
+    rangeHeight === 0 ? rangeHeight : state.pxm * (state.height / rangeHeight);
 
-  const factor = rangeHeight === 0 ? rangeHeight : pxm * (height / rangeHeight);
-
-  const offset = top * (height / rangeHeight);
+  const offset = state.top * (state.height / rangeHeight);
 
   const titleLimit = 30;
   const subTitleLimit = 50;
@@ -193,10 +201,12 @@ const Stratigraphy = (props) => {
             <Styled.FirstLayerList
               backgroundColor={handleColor(layer)}
               backgroundImage={handlePattern(layer)}
-              height={(layer[mapping.to] - layer[mapping.from]) * pxm + "px"}
+              height={
+                (layer[mapping.to] - layer[mapping.from]) * state.pxm + "px"
+              }
               style={{
                 ...(isLayerSelected
-                  ? props.minimapSelectedLayerStyle
+                  ? minimapSelectedLayerStyle
                   : {
                       border: "thin solid rgb(100, 100, 100)",
                     }),
@@ -224,11 +234,13 @@ const Stratigraphy = (props) => {
             {rangeHeight >= 40 && (
               <>
                 <Styled.LensNumber>
-                  {parseInt(top / pxm, 10) + " " + props.unit}
+                  {parseInt(state.top / state.pxm, 10) + " " + unit}
                 </Styled.LensNumber>
                 <div style={{ flex: "1 1 100%" }} />
                 <Styled.LensNumber>
-                  {parseInt((top + rangeHeight) / pxm, 10) + " " + props.unit}
+                  {parseInt((state.top + rangeHeight) / state.pxm, 10) +
+                    " " +
+                    unit}
                 </Styled.LensNumber>
               </>
             )}
@@ -252,13 +264,13 @@ const Stratigraphy = (props) => {
                   // what they are doing??? hoverable?
                   ...(state?.selected !== null &&
                   state?.selected.id === layer[mapping.id]
-                    ? props.selectedLayerStyle
+                    ? selectedLayerStyle
                     : state?.selected !== null
-                    ? props.unselectedLayerStyle
+                    ? unselectedLayerStyle
                     : null),
                   ...(state?.over !== null &&
                   state?.over[mapping.id] === layer[mapping.id]
-                    ? props.overLayerStyle
+                    ? overLayerStyle
                     : null),
                   // until here
                 }}
@@ -269,7 +281,7 @@ const Stratigraphy = (props) => {
                 >
                   {layerHeight > titleLimit && (
                     <Styled.LayerLength isBig={layerHeight > subTitleLimit}>
-                      {layer[mapping.to]} {props.unit}
+                      {layer[mapping.to]} {unit}
                     </Styled.LayerLength>
                   )}
                 </Styled.SecondLayerList>
