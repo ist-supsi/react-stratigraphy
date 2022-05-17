@@ -74,7 +74,8 @@ const Stratigraphy = (props) => {
     return layer[mapping.color];
   };
   const handleOnWheel = (event) => {
-    event.preventDefault();
+    event.stopPropagation();
+
     let scale = state?.scale;
     let factor = 0.05;
     if (scale >= 0.75) {
