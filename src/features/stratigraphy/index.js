@@ -1,1 +1,1 @@
-export { default } from "./stratigraphyFunctionalComponent";
+export { default } from "./stratigraphy";
