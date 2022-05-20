@@ -1,13 +1,14 @@
 import React, { useState } from "react";
 import * as Styled from "./styles";
 import Stratigraphy from "../../../features/stratigraphy";
-import { data } from "./../data";
+import { data, dataCasing, dataFilling } from "./../data";
 
 const FirstModel = () => {
   const [selected, setSelected] = useState(null);
   const [selectedCasing, setSelectedCasing] = useState(null);
   const [selectedFilling, setSelectedFilling] = useState(null);
 
+  // component can't forget selected for each layer.
   return (
     <Styled.Container>
       <Stratigraphy
@@ -27,7 +28,7 @@ const FirstModel = () => {
         </Styled.Description>
       )}
       <Stratigraphy
-        data={data}
+        data={dataCasing}
         onSelected={(layer) => {
           setSelectedCasing(layer);
           setSelected(null);
@@ -43,7 +44,7 @@ const FirstModel = () => {
       )}
 
       <Stratigraphy
-        data={data}
+        data={dataFilling}
         onSelected={(layer) => {
           setSelectedFilling(layer);
           setSelected(null);
