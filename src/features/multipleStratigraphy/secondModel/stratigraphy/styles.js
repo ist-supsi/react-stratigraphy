@@ -15,27 +15,30 @@ export const FirstColumn = styled.div`
   width: 60px;
 `;
 
-export const FirstLayerList = styled.div`
+export const FirstLayerList = styled.div.attrs((props) => ({
+  style: {
+    backgroundColor: props.backgroundColor,
+    backgroundImage: props.backgroundImage,
+    height: props.height,
+  },
+}))`
   position: relative;
   margin: 0px 12px;
-  background-color: ${(props) => props.backgroundColor};
-  background-image: ${(props) => props.backgroundImage};
-  height: ${(props) => props.height};
 `;
-export const LensContainer = styled.div`
-  /* background-color: ${(props) =>
-    props.isSelected ? "#faf99a" : "rgba(255, 255, 255, 0.3)"}; */
-  background-color: rgba(255, 255, 255, 0.3);
-  /* opacity: ${(props) => props.isSelected && 0.5}; */
-  box-shadow: rgba(0, 0, 0, 0.2) 4px 4px 12px;
-  border: ${(props) =>
-    props.isSelected
+export const LensContainer = styled.div.attrs((props) => ({
+  style: {
+    height: props.height,
+    cursor: props.cursor,
+    border: props.isSelected
       ? "2px solid black"
-      : "thin solid rgba(165, 165, 165, 0.5)"};
-  cursor: ${(props) => props.cursor};
+      : "thin solid rgba(165, 165, 165, 0.5)",
+    // backgroundColor: props.isSelected ? "#faf99a" : "rgba(255, 255, 255, 0.3)",
+    // opacity: props.isSelected&& 0.5,
+  },
+}))`
+  box-shadow: rgba(0, 0, 0, 0.2) 4px 4px 12px;
   display: flex;
   flex-direction: column;
-  height: ${(props) => props.height};
   margin: 0px 4px;
   position: absolute;
   top: 0px;
@@ -53,33 +56,45 @@ export const ColumnsContainer = styled.div`
   position: relative;
 `;
 
-export const ShakingColumns = styled.div`
+export const ShakingColumns = styled.div.attrs((props) => ({
+  style: {
+    top: props.offset,
+  },
+}))`
   position: absolute;
-  top: ${(props) => props.offset};
   width: 100%;
 `;
 
-export const LayerInfoList = styled.div`
+export const LayerInfoList = styled.div.attrs((props) => ({
+  style: {
+    height: props.height,
+  },
+}))`
   cursor: pointer;
   display: flex;
   flex-direction: row;
-  height: ${(props) => props.height};
   transition: background-color 0.25s cubic-bezier(0.25, 0.8, 0.25, 1);
 `;
 
-export const SecondLayerList = styled.div`
+export const SecondLayerList = styled.div.attrs((props) => ({
+  style: {
+    backgroundColor: props.backgroundColor,
+    backgroundImage: props.backgroundImage,
+  },
+}))`
   min-width: 4em;
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
-  background-color: ${(props) => props.backgroundColor};
-  background-image: ${(props) => props.backgroundImage};
 `;
 
-export const LayerLength = styled.div`
+export const LayerLength = styled.div.attrs((props) => ({
+  style: {
+    fontSize: props.isBig ? "0.7em" : "0.6em",
+  },
+}))`
   background-color: rgba(0, 0, 0, 0.5);
   color: white;
-  font-size: ${(props) => (props.isBig ? "0.7em" : "0.6em")};
   font-weight: bold;
   text-align: center;
   transition: font-size 0.25s;
@@ -96,9 +111,12 @@ export const ShakingLayerTitle = styled.div`
   top: 0.5em;
 `;
 
-export const LayerTitle = styled.div`
+export const LayerTitle = styled.div.attrs((props) => ({
+  style: {
+    fontSize: props.isBig ? "1em" : "0.8em",
+  },
+}))`
   font-weight: bold;
-  font-size: ${(props) => (props.isBig ? "1em" : "0.8em")};
   transition: font-size 0.25s;
 `;
 
@@ -110,14 +128,18 @@ export const LayerSubtitle = styled.div`
   white-space: nowrap;
 `;
 
-export const Description = styled.div`
+export const Description = styled.div.attrs((props) => ({
+  style: {
+    borderTop: props.selected === true ? "2px solid #f00" : "transparent",
+    borderRight: props.selected === true ? "2px solid #f00" : "transparent",
+    borderBottom: props.selected === true ? "2px solid #f00" : "transparent",
+    backgroundColor:
+      props.selected === true ? "rgb(233, 233, 233)" : "transparent",
+  },
+}))`
   flex: 1 2 100%;
   padding: 1rem;
-  border: ${(props) =>
-    props.selected === true ? "2px solid #f00" : "transparent"};
-  background-color: ${(props) =>
-    props.selected === true ? "rgb(233, 233, 233)" : "transparent"};
-  border-left: none;
+
   transition: all 0.25s cubic-bezier(0.25, 0.8, 0.25, 1);
 `;
 
