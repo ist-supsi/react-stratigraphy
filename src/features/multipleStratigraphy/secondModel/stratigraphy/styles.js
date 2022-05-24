@@ -32,8 +32,13 @@ export const LensContainer = styled.div.attrs((props) => ({
     border: props.isSelected
       ? "2px solid black"
       : "thin solid rgba(165, 165, 165, 0.5)",
-    // backgroundColor: props.isSelected ? "#faf99a" : "rgba(255, 255, 255, 0.3)",
-    // opacity: props.isSelected&& 0.5,
+    // backgroundColor: props.isSelected
+    //   ? "rgba(255, 0, 0, 0.3)"
+    //   : "rgba(255, 255, 255, 0.3)",
+    // opacity: props.isSelected && 0.5,
+    boxShadow: props.isSelected
+      ? "rgba(0, 0, 0, 0.6) 4px 4px 14px"
+      : "rgba(0, 0, 0, 0.2) 4px 4px 12px",
   },
 }))`
   box-shadow: rgba(0, 0, 0, 0.2) 4px 4px 12px;
