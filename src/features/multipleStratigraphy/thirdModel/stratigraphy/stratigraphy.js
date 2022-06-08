@@ -220,7 +220,7 @@ const Stratigraphy = (props) => {
         ...props.style,
       }}
     >
-      {[data, dataCasing, dataFilling].map((e, index) => (
+      {[data].map((e, index) => (
         <Styled.FirstColumnContainer key={index}>
           <Styled.FirstColumn key={index}>
             {e?.map((layer, idx) => (
@@ -257,8 +257,126 @@ const Stratigraphy = (props) => {
               axis="y"
               bounds="parent"
               defaultPosition={{ x: 0, y: 0 }}
-              onDrag={(e, data) => handleDrag(e, data, index)}
-              onStart={(e, data) => handleStart(e, data, index)}
+              onDrag={(e, data) => handleDrag(e, data, 0)}
+              onStart={(e, data) => handleStart(e, data, 0)}
+              onStop={handleStop}
+              // position={null}
+              position={{
+                y: state.top,
+                x: 0,
+              }}
+            >
+              <Styled.LensContainer
+                cursor={state.minimapCursor}
+                height={rangeHeight + "px"}
+                isSelected={e === state.selectedColumn}
+                style={{ width: 190 }}
+              ></Styled.LensContainer>
+            </Draggable>
+          </Styled.FirstColumn>
+        </Styled.FirstColumnContainer>
+      ))}
+      {[dataCasing].map((e, index) => (
+        <Styled.FirstColumnContainer key={index}>
+          <Styled.FirstColumn
+            key={index}
+            style={{ width: 120, position: "absolute", left: 75 }}
+          >
+            {e?.map((layer, idx) => (
+              <div key={"stratigraphy-minimap-layer-" + idx}>
+                {
+                  (isLayerSelected =
+                    state?.selected !== null &&
+                    state?.selected?.id === layer[mapping.id] &&
+                    state?.selected?.from === layer[mapping.from] &&
+                    state?.selected?.to === layer[mapping.to] &&
+                    state?.selected?.color === layer[mapping.color] &&
+                    state?.selected?.pattern === layer[mapping.pattern] &&
+                    state?.selected?.title === layer[mapping.title] &&
+                    state?.selected?.subtitle === layer[mapping.subtitle])
+                }
+                {/*props.minimapSelectedLayerStyle it's a red border*/}
+                <Styled.FirstLayerList
+                  backgroundColor={handleColor(layer)}
+                  backgroundImage={handlePattern(layer)}
+                  height={
+                    (layer[mapping.to] - layer[mapping.from]) * state.pxm + "px"
+                  }
+                  style={{
+                    ...(isLayerSelected
+                      ? minimapSelectedLayerStyle
+                      : {
+                          border: "thin solid rgb(100, 100, 100)",
+                        }),
+                  }}
+                />
+              </div>
+            ))}
+            <Draggable
+              axis="y"
+              bounds="parent"
+              defaultPosition={{ x: 0, y: 0 }}
+              onDrag={(e, data) => handleDrag(e, data, 1)}
+              onStart={(e, data) => handleStart(e, data, 1)}
+              onStop={handleStop}
+              // position={null}
+              position={{
+                y: state.top,
+                x: 0,
+              }}
+            >
+              <Styled.LensContainer
+                cursor={state.minimapCursor}
+                height={rangeHeight + "px"}
+                isSelected={e === state.selectedColumn}
+                style={{ width: 110 }}
+              ></Styled.LensContainer>
+            </Draggable>
+          </Styled.FirstColumn>
+        </Styled.FirstColumnContainer>
+      ))}
+      {[dataFilling].map((e, index) => (
+        <Styled.FirstColumnContainer key={index}>
+          <Styled.FirstColumn
+            key={index}
+            style={{ width: 60, position: "absolute", left: 105 }}
+          >
+            {e?.map((layer, idx) => (
+              <div key={"stratigraphy-minimap-layer-" + idx}>
+                {
+                  (isLayerSelected =
+                    state?.selected !== null &&
+                    state?.selected?.id === layer[mapping.id] &&
+                    state?.selected?.from === layer[mapping.from] &&
+                    state?.selected?.to === layer[mapping.to] &&
+                    state?.selected?.color === layer[mapping.color] &&
+                    state?.selected?.pattern === layer[mapping.pattern] &&
+                    state?.selected?.title === layer[mapping.title] &&
+                    state?.selected?.subtitle === layer[mapping.subtitle])
+                }
+                {/*props.minimapSelectedLayerStyle it's a red border*/}
+                <Styled.FirstLayerList
+                  backgroundColor={handleColor(layer)}
+                  backgroundImage={handlePattern(layer)}
+                  height={
+                    (layer[mapping.to] - layer[mapping.from]) * state.pxm + "px"
+                  }
+                  style={{
+                    ...(isLayerSelected
+                      ? minimapSelectedLayerStyle
+                      : {
+                          border: "thin solid rgb(100, 100, 100)",
+                        }),
+                  }}
+                />
+              </div>
+            ))}
+            <Draggable
+              axis="y"
+              bounds="parent"
+              defaultPosition={{ x: 0, y: 0 }}
+              onDrag={(e, data) => handleDrag(e, data, 2)}
+              onStart={(e, data) => handleStart(e, data, 2)}
               onStop={handleStop}
               // position={null}
               position={{
