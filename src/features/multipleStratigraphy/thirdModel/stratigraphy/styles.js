@@ -12,7 +12,7 @@ export const FirstColumnContainer = styled.div`
 
 export const FirstColumn = styled.div`
   position: relative;
-  width: 60px;
+  width: 200px;
 `;
 
 export const FirstLayerList = styled.div.attrs((props) => ({
@@ -33,14 +33,15 @@ export const LensContainer = styled.div.attrs((props) => ({
       ? "2px solid black"
       : "thin solid rgba(165, 165, 165, 0.5)",
     // backgroundColor: props.isSelected
-    //   ? "rgba(255, 0, 0, 0.3)"
+    //   ? "rgba(255, 0, 0, 0.6)"
     //   : "rgba(255, 255, 255, 0.3)",
-    // opacity: props.isSelected && 0.5,
+    // opacity: props.isSelected && 0.7,
     boxShadow: props.isSelected
       ? "rgba(0, 0, 0, 0.6) 4px 4px 14px"
       : "rgba(0, 0, 0, 0.2) 4px 4px 12px",
   },
 }))`
+  background-color: rgba(255, 255, 255, 0.3);
   box-shadow: rgba(0, 0, 0, 0.2) 4px 4px 12px;
   display: flex;
   flex-direction: column;
