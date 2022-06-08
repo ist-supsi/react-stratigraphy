@@ -50,7 +50,7 @@ export const dataCasing = [
   {
     id: 3,
     from: 1.77,
-    to: 2,
+    to: 4,
     color: "#d733ff",
     pattern: "/assets/15102034.svg",
     title: "Altere + Casing 3",
@@ -67,22 +67,23 @@ export const dataFilling = [
     title: "Filling 1",
     subtitle: "Dazit",
   },
+
   {
     id: 1,
-    from: 1.77,
-    to: 2.34,
-    color: "#456789",
-    pattern: "/assets/15104018.svg",
-    title: "Filling 2",
-    subtitle: "Magmatit",
-  },
-  {
-    id: 2,
     from: 1.23,
     to: 1.77,
     color: "#789123",
     pattern: "/assets/15102042.svg",
     title: "Quartar, undifferenziert",
     subtitle: "Phonolith",
+  },
+  {
+    id: 2,
+    from: 1.77,
+    to: 3.34,
+    color: "yellow",
+    pattern: "/assets/15104018.svg",
+    title: "Filling 2",
+    subtitle: "Magmatit",
   },
 ];
