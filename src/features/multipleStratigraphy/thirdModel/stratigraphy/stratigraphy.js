@@ -222,7 +222,7 @@ const Stratigraphy = (props) => {
     >
       {[data].map((e, index) => (
         <Styled.FirstColumnContainer key={index}>
-          <Styled.FirstColumn key={index}>
+          <Styled.FirstColumn key={index} style={{ width: 180 }}>
             {e?.map((layer, idx) => (
               <div key={"stratigraphy-minimap-layer-" + idx}>
                 {
@@ -270,7 +270,7 @@ const Stratigraphy = (props) => {
                 cursor={state.minimapCursor}
                 height={rangeHeight + "px"}
                 isSelected={e === state.selectedColumn}
-                style={{ width: 190 }}
+                style={{ width: 165 }}
               ></Styled.LensContainer>
             </Draggable>
           </Styled.FirstColumn>
@@ -280,7 +280,14 @@ const Stratigraphy = (props) => {
         <Styled.FirstColumnContainer key={index}>
           <Styled.FirstColumn
             key={index}
-            style={{ width: 120, position: "absolute", left: 75 }}
+            style={{
+              width: 120,
+              position: "absolute",
+              left: 63,
+              display: "flex",
+              alignItems: "center",
+              flexDirection: "column",
+            }}
           >
             {e?.map((layer, idx) => (
               <div key={"stratigraphy-minimap-layer-" + idx}>
@@ -308,6 +315,7 @@ const Stratigraphy = (props) => {
                       : {
                           border: "thin solid rgb(100, 100, 100)",
                         }),
+                    width: layer.width,
                   }}
                 />
               </div>
@@ -329,7 +337,7 @@ const Stratigraphy = (props) => {
                 cursor={state.minimapCursor}
                 height={rangeHeight + "px"}
                 isSelected={e === state.selectedColumn}
-                style={{ width: 110 }}
+                style={{ width: 111 }}
               ></Styled.LensContainer>
             </Draggable>
           </Styled.FirstColumn>
@@ -339,7 +347,7 @@ const Stratigraphy = (props) => {
         <Styled.FirstColumnContainer key={index}>
           <Styled.FirstColumn
             key={index}
-            style={{ width: 60, position: "absolute", left: 105 }}
+            style={{ width: 60, position: "absolute", left: 93 }}
           >
             {e?.map((layer, idx) => (
               <div key={"stratigraphy-minimap-layer-" + idx}>

@@ -45,10 +45,10 @@ export const LensContainer = styled.div.attrs((props) => ({
   box-shadow: rgba(0, 0, 0, 0.2) 4px 4px 12px;
   display: flex;
   flex-direction: column;
-  margin: 0px 4px;
+  margin: 0px 6px;
   position: absolute;
   top: 0px;
-  width: 52px;
+  width: 44px;
 `;
 
 export const LensNumber = styled.div`
