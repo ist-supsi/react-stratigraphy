@@ -13,6 +13,7 @@ const FirstModel = () => {
     <Styled.Container>
       <Stratigraphy
         data={data}
+        selected={selected}
         onSelected={(layer) => {
           setSelected(layer);
           setSelectedCasing(null);
@@ -29,6 +30,7 @@ const FirstModel = () => {
       )}
       <Stratigraphy
         data={dataCasing}
+        selected={selectedCasing}
         onSelected={(layer) => {
           setSelectedCasing(layer);
           setSelected(null);
@@ -45,6 +47,7 @@ const FirstModel = () => {
 
       <Stratigraphy
         data={dataFilling}
+        selected={selectedFilling}
         onSelected={(layer) => {
           setSelectedFilling(layer);
           setSelected(null);
