@@ -17,11 +17,12 @@ const Stratigraphy = (props) => {
     selectedLayerStyle,
     unselectedLayerStyle,
     overLayerStyle,
+    selected,
   } = props;
 
   const element = useRef(null);
   const [state, setState] = useState({
-    selected: null,
+    selected: selected ?? null,
     over: null,
     minimapCursor: "grab",
     scale: 1,
@@ -42,6 +43,13 @@ const Stratigraphy = (props) => {
       window.removeEventListener("resize", updateDimensions);
     };
   }, []);
+
+  useEffect(() => {
+    setState((prevState) => ({
+      ...prevState,
+      selected,
+    }));
+  }, [selected]);
 
   const handleTitle = (layer) => {
     if (getTitle !== undefined && typeof getTitle === "function") {
